@@ -5,25 +5,46 @@ import fr.le_campus_numerique.square_games.engine.tictactoe.TicTacToeGameFactory
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class GameCatalogImpl implements GameCatalog{
 
-    private TicTacToeGameFactory ticTacToeGameFactory;
-    private final ConnectFourGameFactory connectFourGameFactory;
+    private final TicTacToePlugin ticTacToePlugin;
+    private final ConnectFourPlugin connectFourPlugin;
+    private final TaquinPlugin taquinPlugin;
 
-    public GameCatalogImpl() {
-        this.ticTacToeGameFactory = new TicTacToeGameFactory();
-        this.connectFourGameFactory = new ConnectFourGameFactory();
+
+    public GameCatalogImpl(
+            TicTacToePlugin ticTacToePlugin,
+            ConnectFourPlugin connectFourPlugin,
+            TaquinPlugin taquinPlugin) {
+
+        this.ticTacToePlugin = ticTacToePlugin;
+        this.connectFourPlugin = connectFourPlugin;
+        this.taquinPlugin = taquinPlugin;
     }
 
-    public Collection<String> getGameIds() {
-        return List.of(
-                ticTacToeGameFactory.getGameFactoryId(),
-                connectFourGameFactory.getGameFactoryId()
+    @Override
+    public Map<String, String> getGames(Locale locale) {
+
+        Map<String, String> games = new LinkedHashMap<>();
+
+        games.put(
+                ticTacToePlugin.getId(),
+                ticTacToePlugin.getName(locale)
         );
-    }
 
+        games.put(
+                connectFourPlugin.getId(),
+                connectFourPlugin.getName(locale)
+        );
+
+        games.put(
+                taquinPlugin.getId(),
+                taquinPlugin.getName(locale)
+        );
+
+        return games;
+    }
 }

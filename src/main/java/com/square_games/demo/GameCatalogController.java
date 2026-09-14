@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.Locale;
+import java.util.Map;
 
 @RestController
 public class GameCatalogController {
@@ -15,7 +17,7 @@ public class GameCatalogController {
     }
 
     @GetMapping("/gameCatalog")
-    public Collection<String> getGameIds() {
-        return gameCatalog.getGameIds();
+    public Map<String, String> getGames(Locale locale) {
+        return gameCatalog.getGames(locale);
     }
 }
