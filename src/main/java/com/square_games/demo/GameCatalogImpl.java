@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Service
-public class GameCatalogImpl implements GameCatalog {
+public class GameCatalogImpl implements GameCatalog{
 
     private TicTacToeGameFactory ticTacToeGameFactory;
     private final ConnectFourGameFactory connectFourGameFactory;
@@ -19,7 +19,6 @@ public class GameCatalogImpl implements GameCatalog {
         this.connectFourGameFactory = new ConnectFourGameFactory();
     }
 
-    @Override
     public Collection<String> getGameIds() {
         return List.of(
                 ticTacToeGameFactory.getGameFactoryId(),
