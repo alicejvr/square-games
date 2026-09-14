@@ -30,11 +30,9 @@ public class GameController {
     }
 
     @GetMapping("/games/{gameId}/tokens/{tokenId}/moves")
-    public Set<CellPosition> getPossibleMoves(
-            @PathVariable String gameId,
-            @PathVariable String tokenId) {
+    public Set<CellPosition> getPossibleMoves(@PathVariable String gameId, @PathVariable String tokenId) {
 
-        System.out.println("Partie : " + gameId);
+        System.out.println("Partie : " + gameId); // exemple UUII : a9422d0f-ac5f-4578-8611-61756fe5dd5c
         System.out.println("Token : " + tokenId);
 
         return null;
@@ -42,9 +40,7 @@ public class GameController {
 
 
     @PostMapping("/games/{gameId}/moves")
-    public void playMove(
-            @PathVariable String gameId,
-            @RequestBody CellPosition position) {
+    public void playMove(@PathVariable String gameId, @RequestBody CellPosition position) {
 
         System.out.println("Partie : " + gameId);
         System.out.println("Position choisie : " + position);
