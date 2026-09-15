@@ -1,14 +1,14 @@
-package com.square_games.demo;
+package com.square_games.demo.service;
 
-import fr.le_campus_numerique.square_games.engine.connectfour.ConnectFourGameFactory;
-import fr.le_campus_numerique.square_games.engine.tictactoe.TicTacToeGameFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.square_games.demo.plugin.ConnectFourPlugin;
+import com.square_games.demo.plugin.TaquinPlugin;
+import com.square_games.demo.plugin.TicTacToePlugin;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-public class GameCatalogImpl implements GameCatalog{
+public class GameCatalogImpl implements GameCatalog {
 
     private final TicTacToePlugin ticTacToePlugin;
     private final ConnectFourPlugin connectFourPlugin;

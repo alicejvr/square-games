@@ -1,5 +1,7 @@
-package com.square_games.demo;
+package com.square_games.demo.controller;
 
+import com.square_games.demo.GameCreationParams;
+import com.square_games.demo.service.GameService;
 import fr.le_campus_numerique.square_games.engine.CellPosition;
 import fr.le_campus_numerique.square_games.engine.Game;
 import org.springframework.web.bind.annotation.*;

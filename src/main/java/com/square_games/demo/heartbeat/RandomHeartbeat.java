@@ -1,4 +1,4 @@
-package com.square_games.demo;
+package com.square_games.demo.heartbeat;
 
 import org.springframework.stereotype.Service;
 
