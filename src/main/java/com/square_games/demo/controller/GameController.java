@@ -23,6 +23,9 @@ public class GameController {
         System.out.println("Type de jeu : " + params.getGameType());
         System.out.println("Nombre de joueurs : " + params.getNumberOfPlayers());
         System.out.println("Taille du plateau : " + params.getBoardSize());
+
+        gameService.createGame(params.getGameType());
+
         }
 
     @GetMapping("/games/{gameId}")
