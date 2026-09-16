@@ -38,4 +38,13 @@ public class HeartbeatController {
         return randomHeartbeat.msgIds(id1, id2, id3);
     }
 
+    @GetMapping("/heartbeathistory")
+    public String heartbeathistory() {
+        return randomHeartbeat.gethistory();
+    }
+
+
+
+
+
 }

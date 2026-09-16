@@ -2,15 +2,21 @@ package com.square_games.demo.heartbeat;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Service
 public class RandomHeartbeat {
 
+    List<Integer> history = new ArrayList<Integer>();
+
     private final Random random = new Random();
 
     public int get() {
-        return random.nextInt(101);
+        int randomNb = random.nextInt(101);
+        history.add(randomNb);
+        return randomNb;
     }
 
     public String msgId(String id) {
@@ -21,4 +27,7 @@ public class RandomHeartbeat {
         return "Vous avez demandé les ID suivants : " + id1 +", "+ id2 +", et "+ id3;
     }
 
+    public String gethistory() {
+        return history.toString();
+    }
 }

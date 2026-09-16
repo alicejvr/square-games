@@ -4,8 +4,11 @@ info:
   seq: 3
 
 http:
-  method: POST
+  method: GET
   url: http://localhost:8080/games
+  body:
+    type: json
+    data: '{"gameType":"tictactoe", "numberOfPlayers":4, "boardSize":4}'
   auth: inherit
 
 settings:
