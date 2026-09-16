@@ -14,8 +14,8 @@ public class RandomHeartbeat {
     private final Random random = new Random();
 
     public int get() {
-        int randomNb = random.nextInt(101);
-        history.add(randomNb);
+        int randomNb = random.nextInt(101); // génère un nb random
+        history.add(randomNb); // l'ajoute à la liste d'int history déclaré ligne 12 (insertion du heartbeaten "bdd")
         return randomNb;
     }
 
@@ -27,7 +27,7 @@ public class RandomHeartbeat {
         return "Vous avez demandé les ID suivants : " + id1 +", "+ id2 +", et "+ id3;
     }
 
-    public String gethistory() {
-        return history.toString();
+    public String gethistory() { // fonction qui renvoie la liste history
+        return history.toString(); //  sous forme de string (liste de ts les heartbeat en "bdd")
     }
 }

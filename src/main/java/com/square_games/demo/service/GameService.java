@@ -15,10 +15,10 @@ import java.util.Map;
 public class GameService {
 
     private final Map<String, GamePlugin> gamePluginsByName;
-    // private final GameDao gameDao;
+    private final GameDao gameDao;
 
-    public GameService(List<GamePlugin> gamePlugins/*, GameDao gameDao*/) {
-        // this.gameDao = gameDao;
+    public GameService(List<GamePlugin> gamePlugins, GameDao gameDao) {
+        this.gameDao = gameDao;
         this.gamePluginsByName = new HashMap<>();
         for (GamePlugin plugin : gamePlugins) {
             gamePluginsByName.put(plugin.getName(FRENCH), plugin);
@@ -29,8 +29,7 @@ public class GameService {
         GamePlugin plugin = gamePluginsByName.get(gameName);
         Game game = plugin.createGame();
 
-        // return gameDao.upsert(game);
-        return game;
+        return gameDao.upsert(game);
     }
 
     public String getGameName(String gameName, Locale locale) {

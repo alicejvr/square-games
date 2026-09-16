@@ -38,9 +38,9 @@ public class HeartbeatController {
         return randomHeartbeat.msgIds(id1, id2, id3);
     }
 
-    @GetMapping("/heartbeathistory")
+    @GetMapping("/heartbeathistory") // requête pour accéder à l'historique des random numbers générés
     public String heartbeathistory() {
-        return randomHeartbeat.gethistory();
+        return randomHeartbeat.gethistory(); // on va chercher la fonction gethistory ds la classe randomHeartbeat
     }
 
 
