@@ -17,12 +17,10 @@ import java.util.stream.Stream;
 @RestController
 public class GameController {
     private final GameService gameService;
-    private final InMemoryGameDao inMemoryGameDao;
     private final GameDao gameDao;
 
-    public GameController(GameService gameService, InMemoryGameDao inMemoryGameDao, GameDao gameDao) {
+    public GameController(GameService gameService, GameDao gameDao) {
         this.gameService = gameService;
-        this.inMemoryGameDao = inMemoryGameDao;
         this.gameDao = gameDao;
     }
 
