@@ -1,0 +1,19 @@
+info:
+  name: Games POST
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: http://localhost:8080/games
+  body:
+    type: json
+    data: '{"gameType":"Taquin", "numberOfPlayers":1, "boardSize":4}'
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
