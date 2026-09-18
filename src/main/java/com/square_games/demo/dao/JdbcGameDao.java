@@ -2,7 +2,9 @@ package com.square_games.demo.dao;
 
 import fr.le_campus_numerique.square_games.engine.Game;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -16,6 +18,12 @@ public class JdbcGameDao implements GameDao {
 
     public JdbcGameDao(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        System.out.println("JDBC template ok");
+
+        /*
+        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("id", 1);
+        String result = jdbcTemplate.queryForObject("SELECT NAME FROM EMPLOYEE WHERE ID = :id", namedParameters, String.class);
+        System.out.println(result);*/
     }
 
     @Override
