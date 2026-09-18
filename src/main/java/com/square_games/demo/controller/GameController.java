@@ -22,6 +22,7 @@ public class GameController {
     public GameController(GameService gameService, GameDao gameDao) {
         this.gameService = gameService;
         this.gameDao = gameDao;
+        System.out.println("GameController :: constructeur : implémentation de GameDao : "+ this.gameDao.getClass());
     }
 
     @PostMapping("/games")

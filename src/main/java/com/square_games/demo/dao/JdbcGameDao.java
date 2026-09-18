@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-@Primary
 @Repository
 public class JdbcGameDao implements GameDao {
 
