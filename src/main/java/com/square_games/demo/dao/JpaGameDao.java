@@ -70,12 +70,7 @@ public class JpaGameDao implements GameDao {
         entity.factoryId = game.getFactoryId();
         entity.boardSize = game.getBoardSize();
 
-        entity.playerIds = String.join(
-                ",",
-                game.getPlayerIds().stream()
-                        .map(UUID::toString)
-                        .toList()
-        );
+        entity.playerIds = game.getPlayerIds();
 
         /*entity.tokens = game.getRemainingTokens().stream()
                 .map(token -> {
@@ -119,10 +114,7 @@ public class JpaGameDao implements GameDao {
 
         GameFactory factory = factories.get(entity.factoryId);
 
-        List<UUID> players = List.of(entity.playerIds.split(","))
-                .stream()
-                .map(UUID::fromString)
-                .toList();
+        Set<UUID> players = entity.playerIds;
 
         /*Collection<TokenPosition<UUID>> boardTokens = entity.tokens.stream()
                 .filter(token -> !token.removed)
@@ -148,12 +140,12 @@ public class JpaGameDao implements GameDao {
             return factory.createGameWithIds(
                     UUID.fromString(entity.id),
                     entity.boardSize,
-                    players,
+                    (List<UUID>) players,
                     Collections.emptyList(),
                     Collections.emptyList()
             );
         } catch (InconsistentGameDefinitionException e) {
-            System.out.println("pti pb");
+            System.out.println("ptit pb");
             throw new RuntimeException(e);
         }
     }

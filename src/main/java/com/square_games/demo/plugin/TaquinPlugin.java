@@ -7,6 +7,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
+import java.util.Set;
+import java.util.UUID;
 
 @Component
 public class TaquinPlugin implements GamePlugin {
@@ -32,6 +34,11 @@ public class TaquinPlugin implements GamePlugin {
     @Override
     public Game createGame() {
         return gameFactory.createGame(playerCount, boardSize);
+    }
+
+    @Override
+    public Game createGame(Set<UUID> playerIds) {
+        return null;
     }
 
     @Override

@@ -1,14 +1,14 @@
 info:
   name: Games POST
   type: http
-  seq: 3
+  seq: 2
 
 http:
   method: POST
   url: http://localhost:8080/games
   body:
     type: json
-    data: '{"gameType":"Taquin", "numberOfPlayers":1, "boardSize":4}'
+    data: '{"gameType":"Puissance 4", "numberOfPlayers":2, "boardSize":7}'
   auth: inherit
 
 settings:

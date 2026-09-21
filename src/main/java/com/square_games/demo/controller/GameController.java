@@ -26,30 +26,43 @@ public class GameController {
     }
 
     @PostMapping("/games")
-    public void createGame(@RequestBody GameCreationParams params) {
+    public void createGame(@RequestBody GameCreationParams params,
+                           @RequestHeader("X-UserId") String userId) {
 
+        System.out.println("Joueur : " + userId);
         System.out.println("Type de jeu : " + params.getGameType());
         System.out.println("Nombre de joueurs : " + params.getNumberOfPlayers());
         System.out.println("Taille du plateau : " + params.getBoardSize());
+        System.out.println("Adversaires : " + params.getOpponentIds());
 
-        gameService.createGame(params.getGameType());
+        gameService.createGame(params.getGameType(), userId, params.getOpponentIds());
 
         }
 
     @GetMapping("/games")
-    public Stream<@NotNull UUID> getAllGame() {
+    public Stream<@NotNull UUID> getAllGame(@RequestHeader("X-UserId") String userId) {
+
+        System.out.println("Joueur : " + userId);
+
         return gameDao.findAll().map(Game::getId);
     }
 
     @GetMapping("/games/{gameId}")
-    public Optional<Game> getGame(@PathVariable UUID gameId) {
+    public Optional<Game> getGame(@PathVariable UUID gameId,
+                                  @RequestHeader("X-UserId") String userId) {
+
+        System.out.println("Joueur : " + userId);
         System.out.println("Recherche de la partie : " + gameId);
+
         return gameDao.findById(String.valueOf(gameId)); // valueOf convertit l'UUID en String
     }
 
     @GetMapping("/games/{gameId}/tokens/{tokenId}/moves")
-    public Set<CellPosition> getPossibleMoves(@PathVariable String gameId, @PathVariable String tokenId) {
+    public Set<CellPosition> getPossibleMoves(@PathVariable String gameId,
+                                              @PathVariable String tokenId,
+                                              @RequestHeader("X-UserId") String userId) {
 
+        System.out.println("Joueur : " + userId);
         System.out.println("Partie : " + gameId); // exemple UUII : a9422d0f-ac5f-4578-8611-61756fe5dd5c
         System.out.println("Token : " + tokenId);
 
@@ -58,8 +71,11 @@ public class GameController {
 
 
     @PostMapping("/games/{gameId}/moves")
-    public void playMove(@PathVariable String gameId, @RequestBody CellPosition position) {
+    public void playMove(@PathVariable String gameId,
+                         @RequestBody CellPosition position,
+                         @RequestHeader("X-UserId") String userId) {
 
+        System.out.println("Joueur : " + userId);
         System.out.println("Partie : " + gameId);
         System.out.println("Position choisie : " + position);
     }
