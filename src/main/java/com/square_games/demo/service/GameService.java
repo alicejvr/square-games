@@ -19,7 +19,7 @@ public class GameService {
         this.gameDao = gameDao;
         this.gamePluginsByName = new HashMap<>();
         for (GamePlugin plugin : gamePlugins) {
-            gamePluginsByName.put(plugin.getName(FRENCH), plugin);
+            gamePluginsByName.put(plugin.getId(), plugin);
         }
     }
 
