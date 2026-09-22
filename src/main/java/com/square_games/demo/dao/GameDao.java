@@ -3,11 +3,14 @@ package com.square_games.demo.dao;
 import fr.le_campus_numerique.square_games.engine.Game;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 public interface GameDao {
     // flux de plusieurs objets Game (stream permet de parcourir et récupérer des données)
     Stream<Game> findAll();
+
+    Stream<Game> findByPlayerId(UUID playerId);
 
     // chercher la partie qui possède cet ID - la partie peut ne pas exister, d'où Optional
     Optional<Game> findById(String gameId);

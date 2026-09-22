@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @Repository // composant chargé de l'accès aux données
@@ -16,6 +17,11 @@ public class InMemoryGameDao implements GameDao{
     @Override
     public Stream<Game> findAll() {
         return games.values().stream(); // on prend ttes les parties présentes dans la map
+    }
+
+    @Override
+    public Stream<Game> findByPlayerId(UUID playerId) {
+        return Stream.empty();
     }
 
     @Override

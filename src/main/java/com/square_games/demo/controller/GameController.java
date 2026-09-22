@@ -40,11 +40,19 @@ public class GameController {
         }
 
     @GetMapping("/games")
-    public Stream<@NotNull UUID> getAllGame(@RequestHeader("X-UserId") String userId) {
+    public Stream<@NotNull UUID> getAllGame() {
 
-        System.out.println("Joueur : " + userId);
+        System.out.println("Test Get games");
 
         return gameDao.findAll().map(Game::getId);
+    }
+
+    @GetMapping("/gamesForUser")
+    public Stream<@NotNull UUID> getAllGame(@RequestHeader("X-UserId") String userId) {
+
+        System.out.println("Jeux pour l'utilisateur : " + userId);
+
+        return gameDao.findByPlayerId(UUID.fromString(userId)).map(Game::getId);
     }
 
     @GetMapping("/games/{gameId}")
@@ -76,8 +84,8 @@ public class GameController {
                          @RequestHeader("X-UserId") String userId) {
 
         System.out.println("Joueur : " + userId);
-        System.out.println("Partie : " + gameId);
         System.out.println("Position choisie : " + position);
+        System.out.println("Partie : " + gameId);
     }
 
 

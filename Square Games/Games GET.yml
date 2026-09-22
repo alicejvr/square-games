@@ -6,6 +6,9 @@ info:
 http:
   method: GET
   url: http://localhost:8080/games
+  headers:
+    - name: X-UserId
+      value: 47873e43-e4c8-4e9a-8051-97097311453b
   auth: inherit
 
 settings:

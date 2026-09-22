@@ -2,14 +2,11 @@ package com.square_games.demo.dao;
 
 import com.square_games.demo.entities.GameEntity;
 import com.square_games.demo.entities.GameEntityRepository;
-import com.square_games.demo.entities.GameTokenEntity;
 import fr.le_campus_numerique.square_games.engine.Game;
 import fr.le_campus_numerique.square_games.engine.GameFactory;
 import fr.le_campus_numerique.square_games.engine.InconsistentGameDefinitionException;
-import fr.le_campus_numerique.square_games.engine.TokenPosition;
 import fr.le_campus_numerique.square_games.engine.connectfour.ConnectFourGameFactory;
 import fr.le_campus_numerique.square_games.engine.taquin.TaquinGameFactory;
-import fr.le_campus_numerique.square_games.engine.tictactoe.TicTacToeGame;
 import fr.le_campus_numerique.square_games.engine.tictactoe.TicTacToeGameFactory;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
@@ -42,6 +39,12 @@ public class JpaGameDao implements GameDao {
         return gameEntityRepository.findAll()
                 .stream()
                 .map(this::toGame);
+    }
+
+    @Override
+    public Stream<Game> findByPlayerId(UUID playerId) {
+        return findAll()
+                .filter(game -> game.getPlayerIds().contains(playerId));
     }
 
     @Override
@@ -135,12 +138,13 @@ public class JpaGameDao implements GameDao {
                         0
                 ))
                 .toList();*/
-
+        System.out.println("Joueurs récupérés : " + players);
+        System.out.println("Nombre de joueurs récupérés : " + players.size());
         try {
             return factory.createGameWithIds(
                     UUID.fromString(entity.id),
                     entity.boardSize,
-                    (List<UUID>) players,
+                    new ArrayList<>(players),
                     Collections.emptyList(),
                     Collections.emptyList()
             );

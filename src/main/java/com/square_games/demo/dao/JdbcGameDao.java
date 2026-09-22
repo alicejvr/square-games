@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @Repository
@@ -27,6 +28,11 @@ public class JdbcGameDao implements GameDao {
 
     @Override
     public Stream<Game> findAll() {
+        return Stream.empty();
+    }
+
+    @Override
+    public Stream<Game> findByPlayerId(UUID playerId) {
         return Stream.empty();
     }
 
