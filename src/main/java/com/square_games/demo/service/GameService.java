@@ -4,8 +4,7 @@ import com.square_games.demo.dao.GameDao;
 import com.square_games.demo.plugin.GamePlugin;
 import fr.le_campus_numerique.square_games.engine.Game;
 import org.springframework.stereotype.Service;
-
-import static java.util.Locale.FRENCH;
+import org.springframework.web.client.RestClient;
 
 import java.util.*;
 
@@ -18,6 +17,7 @@ public class GameService {
     public GameService(List<GamePlugin> gamePlugins, GameDao gameDao) {
         this.gameDao = gameDao;
         this.gamePluginsByName = new HashMap<>();
+        testRestClient();
         for (GamePlugin plugin : gamePlugins) {
             gamePluginsByName.put(plugin.getId(), plugin);
         }
@@ -56,4 +56,17 @@ public class GameService {
         GamePlugin plugin = gamePluginsByName.get(gameName);
         return plugin.getName(locale);
     }
+
+    public void testRestClient() {
+        RestClient restClient = RestClient.create();
+
+        String id = "user-001";
+        String result = restClient.get()
+                .uri("http://localhost:8081/users/{id}/valid", id)
+        	    .retrieve()
+                .body(String.class);
+
+        System.out.println(result + " : " + id + " existe");
+    }
+
 }
