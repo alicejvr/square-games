@@ -38,7 +38,7 @@ public class ConnectFourPlugin implements GamePlugin {
 
     @Override
     public Game createGame(Set<UUID> playerIds) {
-        return null;
+        return gameFactory.createGame(boardSize, playerIds);
     }
 
     @Override

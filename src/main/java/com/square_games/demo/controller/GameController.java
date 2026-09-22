@@ -2,11 +2,11 @@ package com.square_games.demo.controller;
 
 import com.square_games.demo.GameCreationParams;
 import com.square_games.demo.dao.GameDao;
-import com.square_games.demo.dao.InMemoryGameDao;
 import com.square_games.demo.service.GameService;
 import fr.le_campus_numerique.square_games.engine.CellPosition;
 import fr.le_campus_numerique.square_games.engine.Game;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
@@ -22,6 +22,9 @@ public class GameController {
     private final GameService gameService;
     private final GameDao gameDao;
 
+    @Value("${user-service.url}")
+    private String userServiceUrl;
+
     public GameController(GameService gameService, GameDao gameDao) {
         this.gameService = gameService;
         this.gameDao = gameDao;
@@ -32,7 +35,7 @@ public class GameController {
         RestClient restClient = RestClient.create();
 
         Boolean result = restClient.get()
-                .uri("http://localhost:8081/users/{id}/valid", id)
+                .uri(userServiceUrl + "/users/{id}/valid", id)
                 .retrieve()
                 .body(Boolean.class);
 
