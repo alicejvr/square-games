@@ -17,7 +17,7 @@ public class GameService {
     public GameService(List<GamePlugin> gamePlugins, GameDao gameDao) {
         this.gameDao = gameDao;
         this.gamePluginsByName = new HashMap<>();
-        testRestClient();
+        // restClient();
         for (GamePlugin plugin : gamePlugins) {
             gamePluginsByName.put(plugin.getId(), plugin);
         }
@@ -57,7 +57,7 @@ public class GameService {
         return plugin.getName(locale);
     }
 
-    public void testRestClient() {
+    /*public void restClient() {
         RestClient restClient = RestClient.create();
 
         String id = "user-001";
@@ -67,6 +67,6 @@ public class GameService {
                 .body(String.class);
 
         System.out.println(result + " : " + id + " existe");
-    }
+    }*/
 
 }
