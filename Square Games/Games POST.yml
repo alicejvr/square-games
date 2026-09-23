@@ -15,12 +15,10 @@ http:
     type: json
     data: |-
       {
-        "gameType": "tictactoe",
-        "numberOfPlayers": 2,
-        "boardSize": 3,
-        "opponentIds": [
-          "47873e43-e4c8-4e9a-8051-97097311453b"
-        ]
+        "gameType": "15 puzzle",
+        "numberOfPlayers": 1,
+        "boardSize": 5,
+        "opponentIds": []
       }
   auth: inherit
 

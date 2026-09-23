@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,32 +26,11 @@ public class GameController {
     private final GameService gameService;
     private final GameDao gameDao;
 
-    @Value("${user-service.url}")
-    private String userServiceUrl;
-
     public GameController(GameService gameService, GameDao gameDao) {
         this.gameService = gameService;
         this.gameDao = gameDao;
         System.out.println("GameController :: constructeur : implémentation de GameDao : "+ this.gameDao.getClass());
     }
-
-    public boolean checkUserExists(String id) {
-        RestClient restClient = RestClient.create();
-
-        Boolean result = restClient.get()
-                .uri(userServiceUrl + "/users/{id}/valid", id)
-                .retrieve()
-                .body(Boolean.class);
-
-        System.out.println(result + " : " + id + " existe");
-
-        if (!result) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
-
-        return true;
-    }
-
 
     @Operation(summary = "Créer une nouvelle partie")
     @ApiResponses({
@@ -69,7 +49,9 @@ public class GameController {
     })
     @PostMapping("/games")
     public void createGame(@RequestBody GameCreationParams params,
-                           @RequestHeader("X-UserId") String userId) {
+                           Authentication authentication) {
+
+        String userId = authentication.getName();
 
         System.out.println("Joueur : " + userId);
         System.out.println("Type de jeu : " + params.getGameType());
@@ -77,7 +59,6 @@ public class GameController {
         System.out.println("Taille du plateau : " + params.getBoardSize());
         System.out.println("Adversaires : " + params.getOpponentIds());
 
-        checkUserExists(userId);
         gameService.createGame(params.getGameType(), userId, params.getOpponentIds());
 
         }
@@ -111,11 +92,12 @@ public class GameController {
             )
     })
     @GetMapping("/gamesForUser")
-    public Stream<@NotNull UUID> getAllGame(@RequestHeader("X-UserId") String userId) {
+    public Stream<@NotNull UUID> getAllGame(Authentication authentication) {
+
+        String userId = authentication.getName();
 
         System.out.println("Jeux pour l'utilisateur : " + userId);
 
-        checkUserExists(userId);
         return gameDao.findByPlayerId(UUID.fromString(userId)).map(Game::getId);
     }
 
@@ -137,12 +119,12 @@ public class GameController {
     })
     @GetMapping("/games/{gameId}")
     public Optional<Game> getGame(@PathVariable UUID gameId,
-                                  @RequestHeader("X-UserId") String userId) {
+                                  Authentication authentication) {
+
+        String userId = authentication.getName();
 
         System.out.println("Joueur : " + userId);
         System.out.println("Recherche de la partie : " + gameId);
-
-        checkUserExists(userId);
 
         return gameDao.findById(String.valueOf(gameId)); // valueOf convertit l'UUID en String
     }
@@ -166,13 +148,12 @@ public class GameController {
     @GetMapping("/games/{gameId}/tokens/{tokenId}/moves")
     public Set<CellPosition> getPossibleMoves(@PathVariable String gameId,
                                               @PathVariable String tokenId,
-                                              @RequestHeader("X-UserId") String userId) {
+                                              Authentication authentication) {
+        String userId = authentication.getName();
 
         System.out.println("Joueur : " + userId);
         System.out.println("Partie : " + gameId); // exemple UUII : a9422d0f-ac5f-4578-8611-61756fe5dd5c
         System.out.println("Token : " + tokenId);
-
-        checkUserExists(userId);
 
         return null;
     }
@@ -200,13 +181,14 @@ public class GameController {
     @PostMapping("/games/{gameId}/moves")
     public void playMove(@PathVariable String gameId,
                          @RequestBody CellPosition position,
-                         @RequestHeader("X-UserId") String userId) {
+                         Authentication authentication) {
+
+        String userId = authentication.getName();
 
         System.out.println("Joueur : " + userId);
         System.out.println("Position choisie : " + position);
         System.out.println("Partie : " + gameId);
 
-        checkUserExists(userId);
     }
 
 
