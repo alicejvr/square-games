@@ -7,8 +7,8 @@ http:
   method: GET
   url: http://localhost:8080/games
   headers:
-    - name: X-UserId
-      value: 47873e43-e4c8-4e9a-8051-97097311453b
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxYTU4NzNkZC1mNWI1LTQzMzAtYjQwMy0xNGRiNTRmOTkxODIiLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNzkwMjM5Mzk0LCJleHAiOjE3OTAyNDI5OTR9.Npixtkq5-EhgOxQ5itFRAf91CdXXGAAR7dpNN4j04I4
   auth: inherit
 
 settings:

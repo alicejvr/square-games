@@ -2,9 +2,8 @@ package com.square_games.demo.dao;
 
 import com.square_games.demo.entities.GameEntity;
 import com.square_games.demo.entities.GameEntityRepository;
-import fr.le_campus_numerique.square_games.engine.Game;
-import fr.le_campus_numerique.square_games.engine.GameFactory;
-import fr.le_campus_numerique.square_games.engine.InconsistentGameDefinitionException;
+import com.square_games.demo.entities.GameTokenEntity;
+import fr.le_campus_numerique.square_games.engine.*;
 import fr.le_campus_numerique.square_games.engine.connectfour.ConnectFourGameFactory;
 import fr.le_campus_numerique.square_games.engine.taquin.TaquinGameFactory;
 import fr.le_campus_numerique.square_games.engine.tictactoe.TicTacToeGameFactory;
@@ -75,8 +74,16 @@ public class JpaGameDao implements GameDao {
 
         entity.playerIds = game.getPlayerIds();
 
-        /*entity.tokens = game.getRemainingTokens().stream()
-                .map(token -> {
+        System.out.println("Jeu sauvegardé : " + game.getFactoryId());
+        System.out.println("Nombre de tokens restants : " + game.getRemainingTokens().size());
+        System.out.println("Nombre de tokens retirés : " + game.getRemovedTokens().size());
+
+        // Sauvegarde des tokens présents sur le plateau
+        entity.tokens = game.getBoard().entrySet().stream()
+                .map(entry -> {
+                    CellPosition position = entry.getKey();
+                    Token token = entry.getValue();
+
                     GameTokenEntity tokenEntity = new GameTokenEntity();
 
                     tokenEntity.ownerId = token.getOwnerId()
@@ -85,13 +92,14 @@ public class JpaGameDao implements GameDao {
 
                     tokenEntity.name = token.getName();
                     tokenEntity.removed = false;
-                    tokenEntity.x = token.getPosition().x();
-                    tokenEntity.y = token.getPosition().y();
+                    tokenEntity.x = position.x();
+                    tokenEntity.y = position.y();
 
                     return tokenEntity;
                 })
                 .collect(java.util.stream.Collectors.toList());
 
+// Ajout des éventuels tokens retirés
         entity.tokens.addAll(
                 game.getRemovedTokens().stream()
                         .map(token -> {
@@ -107,19 +115,20 @@ public class JpaGameDao implements GameDao {
                             return tokenEntity;
                         })
                         .toList()
-        );*/
+        );
 
         return entity;
     }
 
     // Conversion GameEntity → Game
-    private Game toGame(GameEntity entity){
+    private Game toGame(GameEntity entity) {
 
         GameFactory factory = factories.get(entity.factoryId);
 
         Set<UUID> players = entity.playerIds;
 
-        /*Collection<TokenPosition<UUID>> boardTokens = entity.tokens.stream()
+        // Récupération des tokens présents sur le plateau
+        Collection<TokenPosition<UUID>> boardTokens = entity.tokens.stream()
                 .filter(token -> !token.removed)
                 .map(token -> new TokenPosition<>(
                         token.ownerId == null ? null : UUID.fromString(token.ownerId),
@@ -129,6 +138,7 @@ public class JpaGameDao implements GameDao {
                 ))
                 .toList();
 
+        // Récupération des tokens retirés
         Collection<TokenPosition<UUID>> removedTokens = entity.tokens.stream()
                 .filter(token -> token.removed)
                 .map(token -> new TokenPosition<>(
@@ -137,16 +147,22 @@ public class JpaGameDao implements GameDao {
                         0,
                         0
                 ))
-                .toList();*/
+                .toList();
+
         System.out.println("Joueurs récupérés : " + players);
         System.out.println("Nombre de joueurs récupérés : " + players.size());
+
+        System.out.println("Nombre de tokens en base : " + entity.tokens.size());
+        System.out.println("Nombre de boardTokens : " + boardTokens.size());
+        System.out.println("Nombre de removedTokens : " + removedTokens.size());
+
         try {
             return factory.createGameWithIds(
                     UUID.fromString(entity.id),
                     entity.boardSize,
                     new ArrayList<>(players),
-                    Collections.emptyList(),
-                    Collections.emptyList()
+                    boardTokens,
+                    removedTokens
             );
         } catch (InconsistentGameDefinitionException e) {
             System.out.println("ptit pb");

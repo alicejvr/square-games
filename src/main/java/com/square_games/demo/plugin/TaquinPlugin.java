@@ -38,7 +38,15 @@ public class TaquinPlugin implements GamePlugin {
 
     @Override
     public Game createGame(Set<UUID> playerIds) {
-        return gameFactory.createGame(boardSize, playerIds);
+        Game game = gameFactory.createGame(boardSize, playerIds);
+
+        System.out.println("TAQUIN créé");
+        System.out.println("Factory ID : " + game.getFactoryId());
+        System.out.println("Board size : " + game.getBoardSize());
+        System.out.println("Remaining tokens : " + game.getRemainingTokens().size());
+        System.out.println("Removed tokens : " + game.getRemovedTokens().size());
+
+        return game;
     }
 
     @Override

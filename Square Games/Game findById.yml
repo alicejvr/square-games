@@ -5,10 +5,10 @@ info:
 
 http:
   method: GET
-  url: http://localhost:8080/games/5650f9f1-197e-4519-9659-81b72b38b8b7
+  url: http://localhost:8080/games/dcadc7ab-55c2-4d24-a958-ab93ec9f0bbc
   headers:
-    - name: X-UserId
-      value: 47873e43-e4c8-4e9a-8051-97097311453b
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxYTU4NzNkZC1mNWI1LTQzMzAtYjQwMy0xNGRiNTRmOTkxODIiLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNzkwMjM5Mzk0LCJleHAiOjE3OTAyNDI5OTR9.Npixtkq5-EhgOxQ5itFRAf91CdXXGAAR7dpNN4j04I4
   auth: inherit
 
 settings:

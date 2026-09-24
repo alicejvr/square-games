@@ -7,8 +7,8 @@ http:
   method: POST
   url: http://localhost:8080/games
   headers:
-    - name: X-UserId
-      value: 24c31cdf-33d5-78d8-93a4-43054311453b
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhMGUxNTlmZi0zMGRkLTQ1M2YtOTFiMS04YzY2Njg0NmMxOTEiLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNzkwMjM5NzkyLCJleHAiOjE3OTAyNDMzOTJ9.je2mZMO4nrvMjT77yIRaD0UrK8bSRReaZRGTofsk_o8
     - name: Content-Type
       value: application/json
   body:
@@ -17,7 +17,7 @@ http:
       {
         "gameType": "15 puzzle",
         "numberOfPlayers": 1,
-        "boardSize": 5,
+        "boardSize": 4,
         "opponentIds": []
       }
   auth: inherit

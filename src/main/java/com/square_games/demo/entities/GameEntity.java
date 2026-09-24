@@ -18,6 +18,10 @@ public class GameEntity {
     @ElementCollection
     public Set<UUID> playerIds;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
     public List<GameTokenEntity> tokens;
 }

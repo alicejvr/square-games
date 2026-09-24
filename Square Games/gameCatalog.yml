@@ -6,6 +6,9 @@ info:
 http:
   method: GET
   url: http://localhost:8080/gameCatalog
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxYTU4NzNkZC1mNWI1LTQzMzAtYjQwMy0xNGRiNTRmOTkxODIiLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNzkwMjM1ODQ4LCJleHAiOjE3OTAyMzk0NDh9.buix639RoiMcX1chwReFjMMnCD4IKTs4EPYZLjKWQVU
   auth: inherit
 
 settings:

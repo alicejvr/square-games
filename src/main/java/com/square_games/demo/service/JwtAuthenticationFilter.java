@@ -22,9 +22,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
+
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
+
+        System.out.println("JWT FILTER : requête reçue");
 
         // Récupère l'en-tête Authorization
         String authHeader = request.getHeader("Authorization");
@@ -32,14 +35,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Vérifie qu'il contient "Bearer <token>"
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
 
+            System.out.println("JWT FILTER : Bearer trouvé");
+
             // Récupère le JWT
             String token = authHeader.substring(7);
 
             // Vérifie que le JWT est valide
             if (jwtService.isTokenValid(token)) {
 
+                System.out.println("JWT FILTER : token valide");
+
                 // Récupère l'utilisateur dans le JWT
                 String username = jwtService.extractUsername(token);
+
+                System.out.println("JWT FILTER : username = " + username);
 
                 // Récupère les rôles dans le JWT
                 List<String> roles = jwtService.extractRoles(token);
