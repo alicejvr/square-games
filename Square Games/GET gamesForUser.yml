@@ -1,0 +1,19 @@
+info:
+  name: GET gamesForUser
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: http://localhost:8080/gamesForUser
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NjM4YjRmZi1hNmNjLTQ2MTQtOTRlNy03ZmE3MzRiZjcwYjQiLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNzkwMjQxMTM5LCJleHAiOjE3OTAyNDQ3Mzl9.ptyKpoMlSckz5IzMFxyPeYpzpFxpSWkASvsw0FJh99I
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

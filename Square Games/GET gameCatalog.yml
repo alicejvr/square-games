@@ -1,5 +1,5 @@
 info:
-  name: gameCatalog
+  name: GET gameCatalog
   type: http
   seq: 4
 
@@ -8,7 +8,7 @@ http:
   url: http://localhost:8080/gameCatalog
   headers:
     - name: Authorization
-      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxYTU4NzNkZC1mNWI1LTQzMzAtYjQwMy0xNGRiNTRmOTkxODIiLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNzkwMjM1ODQ4LCJleHAiOjE3OTAyMzk0NDh9.buix639RoiMcX1chwReFjMMnCD4IKTs4EPYZLjKWQVU
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhMGUxNTlmZi0zMGRkLTQ1M2YtOTFiMS04YzY2Njg0NmMxOTEiLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNzkwMjM5NzkyLCJleHAiOjE3OTAyNDMzOTJ9.je2mZMO4nrvMjT77yIRaD0UrK8bSRReaZRGTofsk_o8
   auth: inherit
 
 settings:

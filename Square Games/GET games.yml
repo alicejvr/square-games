@@ -1,5 +1,5 @@
 info:
-  name: Games GET
+  name: GET games
   type: http
   seq: 1
 
