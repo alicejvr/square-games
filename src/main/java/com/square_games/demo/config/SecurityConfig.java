@@ -1,4 +1,4 @@
-package com.square_games.demo;
+package com.square_games.demo.config;
 
 import com.square_games.demo.service.JwtAuthenticationFilter;
 import com.square_games.demo.service.JwtService;
@@ -29,6 +29,7 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(
