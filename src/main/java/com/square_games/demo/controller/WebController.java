@@ -4,9 +4,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestClient;
+
+import java.util.Map;
 
 @Controller
 public class WebController {
+
+    private final RestClient restClient;
+
+    public WebController() {
+        this.restClient = RestClient.create();
+    }
 
     @GetMapping("/")
     public String loginPage() {
@@ -18,8 +27,18 @@ public class WebController {
             @RequestParam String username,
             @RequestParam String password) {
 
-        System.out.println("Username : " + username);
-        System.out.println("Password : " + password);
+        Map<String, String> request = Map.of(
+                "username", username,
+                "password", password
+        );
+
+        String response = restClient.post()
+                .uri("http://localhost:8081/auth/login")
+                .body(request)
+                .retrieve()
+                .body(String.class);
+
+        System.out.println("Réponse de api-user : " + response);
 
         return "login";
     }
