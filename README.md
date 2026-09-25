@@ -1,153 +1,318 @@
-# 🎮 Square Games API
+# 🎮 Square Games
 
-API REST développée avec **Java** et **Spring Boot** permettant de créer et gérer des parties de jeux.
+> Application web de jeux de plateau développée avec **Java et Spring Boot**.
 
-L'application prend en charge plusieurs types de jeux grâce à un système de **plugins**, et utilise une base de données pour assurer la persistance des parties.
+**Square Games** permet de créer et gérer des parties de plusieurs jeux, de gérer les joueurs et leurs mouvements, et propose une interface web avec **Thymeleaf**.
 
-> 📚 Projet réalisé dans le cadre d'une formation en développement web / Java.
-
----
-
-## 🛠️ Technologies utilisées
-
-* ☕ Java
-* 🌱 Spring Boot
-* 🌐 Spring Web
-* 🗄️ Spring Data JPA
-* 🐬 MySQL
-* 📖 Springdoc OpenAPI / Swagger
-* 🧪 Bruno pour les tests de l'API
-* 📦 Maven
+Le projet fonctionne avec une seconde application, **api-user**, dédiée à la gestion des utilisateurs et à l'authentification.
 
 ---
 
 ## 🏗️ Architecture
 
-L'application est organisée autour de plusieurs couches :
+Le projet est composé de **deux applications Spring Boot indépendantes** qui communiquent via HTTP/REST.
 
 ```text
-Client HTTP (Bruno / Postman)
-          │
-          ▼
-    REST Controller
-          │
-          ▼
-      GameService
-          │
-     ┌────┴────┐
-     ▼         ▼
-GamePlugin   GameDao
-     │         │
-     ▼         ▼
-Game Factory  JPA
-               │
-               ▼
-            MySQL
+                         🌐 Navigateur
+                              │
+                              ▼
+                ┌─────────────────────────┐
+                │      🎮 square-games    │
+                │        Port 8080        │
+                │                         │
+                │  🎲 Jeux & parties      │
+                │  👥 Joueurs             │
+                │  🔌 API REST            │
+                │  🖥️ Interface Thymeleaf │
+                │  🔐 JWT                 │
+                └────────────┬────────────┘
+                             │
+                          HTTP/REST
+                             │
+                             ▼
+                ┌─────────────────────────┐
+                │       👤 api-user       │
+                │        Port 8081        │
+                │                         │
+                │  👤 Utilisateurs        │
+                │  🔐 Authentification    │
+                │  🎟️ JWT                │
+                └────────────┬────────────┘
+                             │
+                             ▼
+                           🗄️ MySQL
 ```
 
-L'application communique également avec le service **api-user** afin de vérifier l'existence des utilisateurs avant certaines opérations.
+### 🎯 Responsabilités de `square-games`
 
-```text
-┌──────────────────────┐
-│     square-games     │
-│      :8080           │
-└──────────┬───────────┘
-           │
-           │ HTTP
-           ▼
-┌──────────────────────┐
-│       api-user       │
-│        :8081         │
-└──────────────────────┘
-```
+* 🎲 Gestion des jeux
+* 🎮 Création et gestion des parties
+* 👥 Gestion des joueurs
+* 🎯 Gestion des mouvements
+* 💾 Persistance des parties
+* 🌐 API REST
+* 🖥️ Interface web Thymeleaf
+* 🔐 Vérification des JWT
+
+### 👤 Responsabilités de `api-user`
+
+* 👤 Gestion des utilisateurs
+* 🔑 Authentification
+* 🛡️ Gestion des rôles
+* 🎟️ Génération des JWT
+* ✅ Vérification des utilisateurs
+
+---
+
+## 🛠️ Technologies
+
+![Java](https://img.shields.io/badge/Java-ED8B00?logo=openjdk\&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=springboot\&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring%20Security-6DB33F?logo=springsecurity\&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql\&logoColor=white)
+![Thymeleaf](https://img.shields.io/badge/Thymeleaf-005F0F?logo=thymeleaf\&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?logo=bootstrap\&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-C71A36?logo=apachemaven\&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?logo=jsonwebtokens\&logoColor=white)
 
 ---
 
 ## 🎲 Jeux disponibles
 
-L'API utilise un système de plugins permettant de gérer plusieurs jeux.
+L'application utilise une architecture basée sur des **plugins**, permettant d'intégrer différents jeux.
 
-| Jeu         | Identifiant | Joueurs | Plateau |
-| ----------- | ----------- | ------: | ------: |
-| Tic-Tac-Toe | `tictactoe` |       2 |   3 à 5 |
-| Puissance 4 | `connect4`  |       2 |       7 |
-| Taquin      | `15 puzzle` |       1 |       4 |
+| Jeu                             | Identifiant | Joueurs |
+| ------------------------------- | ----------- | ------: |
+| ❌⭕ Morpion / Tic-Tac-Toe        | `tictactoe` |       2 |
+| 🔴🟡 Puissance 4 / Connect Four | `connect4`  |       2 |
+| 🔢 Taquin                       | `15 puzzle` |       1 |
 
----
+Chaque jeu possède son propre `GamePlugin`.
 
-# 🚀 Installation
-
-## Prérequis
-
-Avant de démarrer l'application, installer :
-
-* Java
-* Maven
-* MySQL
-* Git
-
-Il est également nécessaire d'avoir lancé l'application **api-user** si l'on souhaite utiliser les fonctionnalités nécessitant la validation des utilisateurs.
+Cette architecture permet d'ajouter de nouveaux jeux sans modifier le fonctionnement général du service de gestion des parties.
 
 ---
 
-## 📥 Cloner le projet
+## 🔐 Authentification
 
-```bash
-git clone <URL_DU_REPOSITORY>
-cd square-games
-```
+L'authentification est gérée par **api-user**.
 
----
-
-## 🗄️ Configuration de la base de données
-
-Créer une base de données MySQL pour l'application.
-
-Puis renseigner les paramètres de connexion dans :
+Le fonctionnement est le suivant :
 
 ```text
-src/main/resources/application.properties
+👤 Utilisateur
+      │
+      │ Identifiant + mot de passe
+      ▼
+🎮 square-games
+      │
+      │ POST /auth/login
+      ▼
+👤 api-user
+      │
+      │ Vérification
+      │
+      │ Génération du JWT
+      ▼
+🎮 square-games
+      │
+      │ JWT
+      ▼
+🍪 Cookie dans le navigateur
+      │
+      ▼
+🔐 JwtAuthenticationFilter
+      │
+      ▼
+✅ Utilisateur authentifié
 ```
+
+Le JWT contient notamment :
+
+* 👤 le nom de l'utilisateur ;
+* 🛡️ son rôle ;
+* 🕐 sa date d'émission ;
+* ⏳ sa date d'expiration.
+
+---
+
+## 🖥️ Interface web
+
+L'interface est réalisée avec :
+
+* **Thymeleaf**
+* **Bootstrap**
+* HTML/CSS
+
+Les templates sont situés dans :
+
+```text
+src/main/resources/templates/
+```
+
+Pages actuelles :
+
+```text
+templates/
+├── login.html
+└── games-home.html
+```
+
+### 🔑 Connexion
+
+```text
+GET /
+```
+
+affiche la page de connexion.
+
+Le formulaire envoie les identifiants vers :
+
+```text
+POST /login
+```
+
+Après authentification, l'utilisateur est redirigé vers :
+
+```text
+GET /games-home
+```
+
+La page utilise notamment Thymeleaf pour afficher les informations de l'utilisateur connecté.
+
+---
+
+## 🌐 API REST
+
+### 🎮 Récupérer les parties
+
+```http
+GET /games
+```
+
+Retourne les parties associées à l'utilisateur authentifié.
 
 Exemple :
 
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/square_games
-spring.datasource.username=VOTRE_UTILISATEUR
-spring.datasource.password=VOTRE_MOT_DE_PASSE
-
-spring.jpa.hibernate.ddl-auto=update
+```json
+[
+  "25c4f297-0b58-41fd-9d96-5190ad12f88b",
+  "41859da4-52f5-4ff3-b8d3-c0c3c415064c"
+]
 ```
 
-Adaptez les valeurs à votre environnement local.
+### ➕ Créer une partie
 
-> ⚠️ Ne publiez jamais un mot de passe ou une information sensible dans un dépôt GitHub public.
+```http
+POST /games
+```
+
+### 🔎 Récupérer une partie
+
+```http
+GET /games/{gameId}
+```
+
+### 🎯 Jouer un mouvement
+
+```http
+POST /games/{gameId}/moves
+```
+
+Exemple de corps de requête :
+
+```json
+{
+  "x": 1,
+  "y": 2
+}
+```
+
+Le serveur vérifie notamment que l'utilisateur authentifié est autorisé à effectuer le mouvement.
 
 ---
 
-## ⚙️ Configuration de api-user
+## 💾 Persistance
 
-`square-games` utilise l'API `api-user` pour vérifier qu'un utilisateur existe.
+Les parties sont persistées dans **MySQL** grâce à :
 
-Dans :
+* Spring Data JPA
+* Hibernate
+* JPA
+
+Principales classes :
 
 ```text
-src/main/resources/application.properties
+GameDao
+   │
+   ▼
+JpaGameDao
+   │
+   ▼
+GameEntityRepository
+   │
+   ▼
+MySQL
 ```
 
-configurer :
+Les principales entités concernent :
 
-```properties
-user-service.url=http://localhost:8081
-```
-
-L'application `api-user` doit donc être démarrée sur le port **8081**.
+* 🎮 les parties ;
+* 👥 les joueurs ;
+* 🧩 les tokens / pions.
 
 ---
 
-# ▶️ Démarrer l'application
+## 📁 Structure du projet
 
-Depuis la racine du projet :
+```text
+square-games/
+│
+├── src/
+│   └── main/
+│       ├── java/
+│       │   └── com.square_games.demo/
+│       │       ├── config/
+│       │       ├── controller/
+│       │       ├── plugin/
+│       │       ├── service/
+│       │       └── ...
+│       │
+│       └── resources/
+│           ├── templates/
+│           │   ├── login.html
+│           │   └── games-home.html
+│           │
+│           └── application.properties
+│
+├── pom.xml
+└── README.md
+```
+
+---
+
+## 🚀 Installation et démarrage
+
+### 📋 Prérequis
+
+* ☕ Java
+* 📦 Maven
+* 🗄️ MySQL
+* 👤 l'application `api-user`
+
+### 1️⃣ Démarrer `api-user`
+
+L'application doit être disponible sur :
+
+```text
+http://localhost:8081
+```
+
+Voir le README du projet `api-user`.
+
+### 2️⃣ Démarrer `square-games`
+
+Dans le dossier du projet :
 
 ```bash
 mvn spring-boot:run
@@ -159,188 +324,53 @@ L'application démarre sur :
 http://localhost:8080
 ```
 
----
+### 3️⃣ Ouvrir l'application
 
-# 📖 Documentation Swagger
-
-Une documentation interactive des endpoints est disponible avec Swagger.
-
-Une fois l'application démarrée :
-
-**Swagger UI :**
+Dans le navigateur :
 
 ```text
-http://localhost:8080/swagger-ui.html
+http://localhost:8080/
 ```
-
-Elle permet notamment de consulter les endpoints et de tester les requêtes directement depuis le navigateur.
 
 ---
 
-# 🔌 Endpoints principaux
+## 🧪 Tester l'API
 
-## 🎮 Créer une partie
+Les requêtes REST peuvent être testées avec **Bruno**.
 
-```http
+Exemples :
+
+```text
+GET  /games
 POST /games
-```
-
-Header :
-
-```text
-X-UserId: <UUID_UTILISATEUR>
-```
-
-Exemple :
-
-```json
-{
-  "gameType": "tictactoe",
-  "numberOfPlayers": 2,
-  "boardSize": 3,
-  "opponentIds": [
-    "8f2a6c11-5d43-4b7e-91c2-36a8f0472d19"
-  ]
-}
-```
-
----
-
-## 📋 Récupérer toutes les parties
-
-```http
-GET /games
-```
-
----
-
-## 👤 Récupérer les parties d'un utilisateur
-
-```http
-GET /gamesForUser
-```
-
-Header :
-
-```text
-X-UserId: <UUID_UTILISATEUR>
-```
-
----
-
-## 🔎 Récupérer une partie
-
-```http
-GET /games/{gameId}
-```
-
-Header :
-
-```text
-X-UserId: <UUID_UTILISATEUR>
-```
-
----
-
-## ♟️ Récupérer les mouvements possibles
-
-```http
-GET /games/{gameId}/tokens/{tokenId}/moves
-```
-
-Header :
-
-```text
-X-UserId: <UUID_UTILISATEUR>
-```
-
----
-
-## 🎯 Jouer un mouvement
-
-```http
+GET  /games/{gameId}
 POST /games/{gameId}/moves
 ```
 
-Header :
+---
+
+## 🔒 Configuration et données sensibles
+
+Les informations de connexion à la base de données sont configurées dans :
 
 ```text
-X-UserId: <UUID_UTILISATEUR>
+src/main/resources/application.properties
 ```
 
-Exemple de corps :
-
-```json
-{
-  "x": 1,
-  "y": 2
-}
-```
+⚠️ Les mots de passe et autres informations sensibles ne doivent pas être publiés sur GitHub.
 
 ---
 
-# 🧪 Tester avec Bruno
+## 🔗 Projet associé
 
-Les requêtes de test sont disponibles dans la collection Bruno du projet.
+👤 **api-user**
 
-Elles permettent notamment de tester :
-
-* la création d'une partie ;
-* la récupération des parties ;
-* la récupération d'une partie précise ;
-* la récupération des mouvements possibles ;
-* l'exécution d'un mouvement ;
-* la validation des utilisateurs.
-
-Les requêtes peuvent utiliser des **variables** afin de réutiliser automatiquement les identifiants entre plusieurs appels.
+Service dédié aux utilisateurs et à l'authentification.
 
 ---
 
-# 🔐 Validation des utilisateurs
+## 👩‍💻 Projet
 
-Avant certaines opérations, `square-games` vérifie que l'utilisateur existe dans l'application `api-user`.
+Projet réalisé dans le cadre d'une formation en développement web.
 
-Le fonctionnement est le suivant :
-
-```text
-square-games
-     │
-     │ GET /users/{id}/valid
-     ▼
- api-user
-     │
-     ├── true  → requête autorisée
-     │
-     └── false → HTTP 403
-```
-
-Les deux applications doivent donc être démarrées pour utiliser complètement l'API.
-
----
-
-# 📁 Structure du projet
-
-```text
-src/
-└── main/
-    ├── java/
-    │   └── com.square_games.demo/
-    │       ├── controller/
-    │       ├── service/
-    │       ├── dao/
-    │       ├── entity/
-    │       ├── plugin/
-    │       └── ...
-    │
-    └── resources/
-        ├── application.properties
-        └── messages.properties
-```
-
----
-
-# 👩‍💻 Projet
-
-Projet réalisé dans le cadre d'une formation de développement web.
-
-Technologies principales : **Java · Spring Boot · REST API · JPA · MySQL · Swagger**
+**Java • Spring Boot • REST • JPA • MySQL • JWT • Thymeleaf • Bootstrap**
