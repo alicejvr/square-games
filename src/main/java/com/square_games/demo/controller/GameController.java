@@ -8,10 +8,14 @@ import fr.le_campus_numerique.square_games.engine.Game;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -21,11 +25,14 @@ import java.util.stream.Stream;
 public class GameController {
     private final GameService gameService;
     private final GameDao gameDao;
+    private final RestClient restClient;
 
-    public GameController(GameService gameService, GameDao gameDao) {
+    public GameController(GameService gameService, GameDao gameDao, RestClient restClient) {
         this.gameService = gameService;
         this.gameDao = gameDao;
-        System.out.println("GameController :: constructeur : implémentation de GameDao : "+ this.gameDao.getClass());
+        this.restClient = restClient;
+
+        System.out.println("GameController :: constructeur : implémentation de GameDao : " + this.gameDao.getClass());
     }
 
     @Operation(summary = "Créer une nouvelle partie")
@@ -88,13 +95,51 @@ public class GameController {
             )
     })
     @GetMapping("/gamesForUser")
-    public Stream<@NotNull UUID> getAllGame(Authentication authentication) {
+    public Stream<@NotNull UUID> getAllGame(
+            Authentication authentication,
+            HttpServletRequest request) {
 
-        String userId = authentication.getName();
+        // Récupère le nom de l'utilisateur connecté
+        String username = authentication.getName();
 
-        System.out.println("Jeux pour l'utilisateur : " + userId);
+        System.out.println("Jeux pour l'utilisateur : " + username);
 
-        return gameDao.findByPlayerId(UUID.fromString(userId)).map(Game::getId);
+        // Récupère le JWT
+        String token = null;
+
+        // Cherche d'abord le JWT dans le header Authorization
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+
+        // Si le JWT n'est pas dans le header,
+        // on le cherche dans le cookie JWT
+        if (token == null && request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("JWT".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        // Demande à api-user de retrouver l'utilisateur grâce à son nom
+        Map<String, Object> user = restClient.get()
+                .uri("http://localhost:8081/users/by-name/" + username)
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .body(Map.class);
+
+        // Récupère l'id de l'utilisateur
+        String userId = (String) user.get("id");
+
+        System.out.println("UUID de l'utilisateur : " + userId);
+
+        // Cherche les parties correspondant à cet UUID
+        return gameDao.findByPlayerId(UUID.fromString(userId))
+                .map(Game::getId);
     }
 
 

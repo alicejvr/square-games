@@ -70,16 +70,21 @@ public class WebController {
 
         System.out.println("--------------- Login OK");
 
+        // redirige vers la page games-home.html
         return "redirect:/games-home";
     }
 
     @GetMapping("/games-home")
     public String games(Authentication authentication, Model model, HttpServletRequest request) {
 
+        // Récupère le nom de l'utilisateur connecté
         String username = authentication.getName();
 
+        // Envoie le nom à Thymeleaf
         model.addAttribute("username", username);
 
+        // Récupère les cookies envoyés par le navigateur
+        Cookie[] cookies = request.getCookies();
         return "games-home";
     }
 
