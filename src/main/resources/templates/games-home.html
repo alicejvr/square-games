@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Square Games</title>
+
+    <!-- Bootstrap -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            crossorigin="anonymous">
+
+    <style>
+
+        body {
+            background-color: #f4f5f7;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background-color: white;
+            box-shadow: 0 0.15rem 0.5rem rgba(0, 0, 0, 0.05);
+        }
+
+        .brand-title {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #212529;
+        }
+
+        .page-title {
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .page-subtitle {
+            color: #6c757d;
+        }
+
+        .game-card {
+            border: none;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+            transition: transform 0.15s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .game-card .card-title {
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .game-card .card-text {
+            color: #6c757d;
+        }
+
+        .btn-dark {
+            padding: 0.6rem 1rem;
+        }
+
+        .games-section {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- Barre de navigation -->
+<nav class="navbar">
+    <div class="container py-2">
+
+        <span class="brand-title">
+            Square Games
+        </span>
+
+        <form action="/logout" method="post">
+            <button type="submit" class="btn btn-outline-dark btn-sm">
+                Déconnexion
+            </button>
+        </form>
+
+    </div>
+</nav>
+
+
+<!-- Contenu principal -->
+<main class="container py-5">
+
+    <div class="games-section">
+
+        <!-- Titre -->
+        <div class="mb-5">
+            <h1 class="page-title h3">
+                Bienvenue <span th:text="${username}"></span> !
+            </h1>
+
+            <p class="page-subtitle mb-0">
+                Choisissez un jeu pour commencer une partie.
+            </p>
+        </div>
+
+
+        <!-- Jeux -->
+        <div class="row g-4">
+
+            <!-- Morpion -->
+            <div class="col-md-6 col-lg-4">
+
+                <div class="game-card card h-100">
+
+                    <div class="card-body p-4">
+
+                        <h2 class="card-title h5">
+                            Morpion
+                        </h2>
+
+                        <p class="card-text">
+                            Affrontez un autre joueur sur un plateau de 3 × 3 cases.
+                        </p>
+
+                        <a href="/games" class="btn btn-dark">
+                            Jouer
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Puissance 4 -->
+            <div class="col-md-6 col-lg-4">
+
+                <div class="game-card card h-100">
+
+                    <div class="card-body p-4">
+
+                        <h2 class="card-title h5">
+                            Puissance 4
+                        </h2>
+
+                        <p class="card-text">
+                            Alignez quatre jetons avant votre adversaire.
+                        </p>
+
+                        <a href="/games" class="btn btn-dark">
+                            Jouer
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Taquin -->
+            <div class="col-md-6 col-lg-4">
+
+                <div class="game-card card h-100">
+
+                    <div class="card-body p-4">
+
+                        <h2 class="card-title h5">
+                            Taquin
+                        </h2>
+
+                        <p class="card-text">
+                            Remettez les cases dans le bon ordre.
+                        </p>
+
+                        <a href="/games" class="btn btn-dark">
+                            Jouer
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

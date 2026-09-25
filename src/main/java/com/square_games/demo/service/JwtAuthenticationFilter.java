@@ -2,6 +2,7 @@ package com.square_games.demo.service;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,16 +30,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         System.out.println("JWT FILTER : requête reçue");
 
-        // Récupère l'en-tête Authorization
+// Récupère l'en-tête Authorization
         String authHeader = request.getHeader("Authorization");
 
-        // Vérifie qu'il contient "Bearer <token>"
+        String token = null;
+
+// Si le JWT est envoyé dans Authorization: Bearer
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
 
             System.out.println("JWT FILTER : Bearer trouvé");
 
-            // Récupère le JWT
-            String token = authHeader.substring(7);
+            token = authHeader.substring(7);
+        }
+
+// Sinon, cherche le JWT dans le cookie
+        if (token == null && request.getCookies() != null) {
+
+            for (Cookie cookie : request.getCookies()) {
+
+                if ("JWT".equals(cookie.getName())) {
+
+                    System.out.println("JWT FILTER : cookie JWT trouvé");
+
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+// Si on a trouvé un JWT
+        if (token != null) {
 
             // Vérifie que le JWT est valide
             if (jwtService.isTokenValid(token)) {
