@@ -192,6 +192,43 @@
 
         </div>
 
+
+        <div class="mt-5">
+
+            <h2 class="h4 mb-3">Mes parties</h2>
+
+            <div th:if="${games.isEmpty()}">
+                <p class="text-muted">
+                    Vous n'avez encore aucune partie.
+                </p>
+            </div>
+
+            <div th:unless="${games.isEmpty()}">
+
+                <div class="list-group">
+
+                    <div
+                            class="list-group-item d-flex justify-content-between align-items-center"
+                            th:each="game : ${games}">
+
+                <span>
+                    Partie <span th:text="${game}"></span>
+                </span>
+
+                        <a
+                                th:href="@{/game/{id}(id=${game})}"
+                                class="btn btn-dark btn-sm">
+                            Jouer
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
 </main>

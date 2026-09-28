@@ -8,10 +8,12 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClient;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -48,7 +50,8 @@ public class WebController {
                 .uri("http://localhost:8081/auth/login")
                 .body(request)
                 .retrieve()
-                .body(new ParameterizedTypeReference<Map<String, String>>() {});
+                .body(new ParameterizedTypeReference<Map<String, String>>() {
+                });
 
         String token = loginResponse.get("token");
 
@@ -83,10 +86,59 @@ public class WebController {
         // Envoie le nom à Thymeleaf
         model.addAttribute("username", username);
 
-        // Récupère les cookies envoyés par le navigateur
-        Cookie[] cookies = request.getCookies();
+        // Cherche le JWT dans les cookies
+        String token = null;
+
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("JWT".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        // Appelle l'API des parties
+        String[] games = restClient.get()
+                .uri("http://localhost:8080/gamesForUser")
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .body(String[].class);
+
+        // Envoie les parties à Thymeleaf
+        model.addAttribute("games", List.of(games));
         return "games-home";
     }
 
+    @GetMapping("/game/{id}")
+    public String game(
+            @PathVariable String id,
+            Model model,
+            HttpServletRequest request) {
+
+        // Récupère le JWT dans le cookie
+        String token = null;
+
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("JWT".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        // Récupère les informations de la partie
+        Map<String, Object> game = restClient.get()
+                .uri("http://localhost:8080/games/" + id)
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .body(Map.class);
+
+        // Envoie la partie à Thymeleaf
+        model.addAttribute("game", game);
+
+        return "game";
+    }
 
 }

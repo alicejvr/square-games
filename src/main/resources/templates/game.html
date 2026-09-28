@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Partie - Square Games</title>
+
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+</head>
+
+<body>
+
+<nav class="navbar navbar-light bg-white border-bottom">
+    <div class="container">
+        <a class="navbar-brand fw-semibold" href="/games-home">
+            Square Games
+        </a>
+    </div>
+</nav>
+
+<div class="container py-5">
+
+    <h1 class="h3 mb-4">
+        Ma partie
+    </h1>
+
+    <div class="card p-4">
+
+        <p>
+            <strong>ID :</strong>
+            <span th:text="${game.id}"></span>
+        </p>
+
+        <p>
+            <strong>Taille du plateau :</strong>
+            <span th:text="${game.boardSize}"></span>
+        </p>
+
+    </div>
+
+    <div class="card p-4 mt-4">
+
+        <h2 class="h5 mb-3">Informations</h2>
+
+        <p>
+            <strong>Type :</strong>
+            <span th:text="${game['factoryId']}"></span>
+        </p>
+
+        <p>
+            <strong>Tour du joueur :</strong>
+            <span th:text="${game['currentPlayerId']}"></span>
+        </p>
+
+        <p>
+            <strong>Statut :</strong>
+            <span th:text="${game['status']}"></span>
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
